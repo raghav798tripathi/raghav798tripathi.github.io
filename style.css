@@ -1,3 +1,4 @@
+
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Nothing+You+Could+Do&display=swap');
 
 :root {
@@ -202,7 +203,10 @@ nav a:hover { color: white; }
     margin-bottom: 1rem;
 }
 
+/* Card Borders */
 .purple-border { border-bottom: 3px solid var(--accent-purple); }
+.cyan-border { border-top: 3px solid var(--accent-cyan); }
+
 .card h3 { font-size: 1.5rem; margin-bottom: 0.5rem; }
 .date { display: block; color: var(--accent-cyan); font-size: 0.8rem; margin-bottom: 1.5rem; font-weight: 600;}
 .card p, .card ul { color: var(--text-muted); }
@@ -255,5 +259,4 @@ footer {
 @keyframes float {
     0% { transform: translateY(0px) rotate(0deg); }
     50% { transform: translateY(-20px) rotate(5deg); }
-    100% { transform: translateY(0px) rotate(0deg); }
 }
