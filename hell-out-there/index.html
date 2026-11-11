@@ -1,0 +1,747 @@
+<title>Hell Out There</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bungee&family=Barlow:wght@500;600;700&display=swap">
+<style>
+/* Layout: one narrow column. The whole page background is an altitude gradient: level 1 is deep hell, level 100 is a gold dawn. All text sits on dark panels so it stays readable at any altitude. */
+:root{
+  --ink:#1a0d18;
+  --panel:#24121f;
+  --line:#4a2a3d;
+  --bone:#f4ead9;
+  --ash:#c3aab9;
+  --ember:#ff5a36;
+  --sulphur:#f5cf3d;
+  --heaven:#46d6b0;
+  --hell:#d92b3a;
+  --display:'Bungee','Impact','Arial Black',sans-serif;
+  --body:'Barlow','Segoe UI',system-ui,sans-serif;
+  color-scheme:dark;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{color-scheme:dark}
+body{
+  margin:0;background:var(--ink);color:var(--bone);
+  font:500 16px/1.45 var(--body);
+  padding-block:18px 28px;
+  padding-left:max(16px,env(safe-area-inset-left,0px));
+  padding-right:max(16px,env(safe-area-inset-right,0px));
+}
+#sky{position:fixed;inset:0;z-index:0;background:linear-gradient(180deg,#1a0508,#8a1425)}
+#app{position:relative;z-index:1;max-width:620px;margin:0 auto}
+.screen{display:flex;flex-direction:column;gap:14px}
+h1,h2,p{margin:0}
+:focus-visible{outline:3px solid var(--bone);outline-offset:3px}
+
+.logo{margin:10px 0 0;font:400 clamp(2.4rem,12.5vw,4.4rem)/.92 var(--display);text-transform:uppercase;letter-spacing:.01em}
+.logo-hell{display:block;font-size:1.4em;color:var(--ember);text-shadow:0 4px 0 #5b0d17,0 0 30px rgba(255,90,54,.5)}
+.logo-out{display:block;color:var(--bone);text-shadow:0 3px 0 #5b0d17}
+.tag{color:var(--bone);font-weight:600;max-width:34ch;text-shadow:0 1px 0 rgba(0,0,0,.6)}
+
+.panel{background:var(--panel);border:2px solid var(--line);border-radius:6px;box-shadow:0 6px 0 rgba(0,0,0,.35);padding:16px}
+label{display:block;font:400 .8rem var(--display);letter-spacing:.06em;text-transform:uppercase;color:var(--sulphur);margin-bottom:8px}
+input{width:100%;background:#170a15;color:var(--bone);border:2px solid var(--line);border-radius:6px;padding:12px;font:600 1rem var(--body)}
+input:focus-visible{outline:3px solid var(--sulphur);outline-offset:1px}
+.err{color:#ff9a8a;font-weight:600;margin-top:8px}
+.fine{color:var(--ash);font-size:.9rem;margin-top:12px}
+#login .btn{margin-top:14px;width:100%}
+
+.btn{
+  font:400 1rem var(--display);letter-spacing:.04em;text-transform:uppercase;
+  border:0;border-radius:6px;padding:13px 18px;cursor:pointer;
+  color:var(--ink);background:var(--sulphur);box-shadow:0 5px 0 #9a7d12;
+  transition:transform .08s,box-shadow .08s;
+}
+.btn:active:not(:disabled){transform:translateY(4px);box-shadow:0 1px 0 #9a7d12}
+.btn:disabled{opacity:.38;cursor:not-allowed}
+.btn-stop{background:var(--ember);color:#fff;box-shadow:0 5px 0 #8f2410}
+.btn-stop:active:not(:disabled){box-shadow:0 1px 0 #8f2410}
+.btn-lock,.btn-win{background:var(--heaven);box-shadow:0 5px 0 #1f7f69}
+.btn-lock:active:not(:disabled){box-shadow:0 1px 0 #1f7f69}
+.btn-ghost{background:var(--panel);color:var(--bone);border:2px solid var(--line);box-shadow:none;padding:9px 12px;font-size:.8rem}
+.btn-ghost:active:not(:disabled){box-shadow:none}
+
+.rules{display:grid;gap:10px;margin:0;padding:0;list-style:none}
+.rules li{background:var(--panel);border:2px solid var(--line);border-radius:6px;padding:10px 14px}
+.rules b{display:block;font:400 .85rem var(--display);color:var(--sulphur);letter-spacing:.05em;text-transform:uppercase}
+.rules span{color:var(--ash)}
+
+.credit{display:block;width:fit-content;max-width:100%;margin:26px auto 0;padding:8px 14px;background:var(--panel);border:2px solid var(--line);border-radius:6px;text-align:center;font-size:.9rem;color:var(--ash)}
+
+/* menu */
+.hello{font:400 clamp(1.4rem,6vw,2rem)/1.1 var(--display);text-transform:uppercase;overflow-wrap:anywhere}
+.hello span{color:var(--sulphur)}
+.menu-top{display:flex;gap:12px;align-items:flex-start;justify-content:space-between}
+#m-cards{display:grid;gap:14px}
+.dcard{display:grid;gap:8px;text-align:left;width:100%;color:var(--bone);cursor:pointer;font:inherit;background:var(--panel);border:2px solid var(--line);border-radius:6px;padding:16px;box-shadow:0 6px 0 rgba(0,0,0,.35);transition:transform .08s,border-color .08s}
+.dcard:hover{border-color:var(--sulphur)}
+.dcard:active{transform:translateY(4px);box-shadow:0 2px 0 rgba(0,0,0,.35)}
+.dcard-h{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap}
+.dcard-n{font:400 1.5rem var(--display);text-transform:uppercase}
+.dcard-c{color:var(--ash);font-weight:600}
+.dcard-l{font-weight:700}
+.dcard-s{color:var(--ash);font-size:.9rem}
+.dcard.easy .dcard-n{color:var(--heaven)}
+.dcard.medium .dcard-n{color:var(--sulphur)}
+.dcard.hard .dcard-n{color:var(--ember)}
+
+.bar{height:10px;background:#170a15;border:2px solid var(--line);border-radius:6px;overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--ember),var(--sulphur),var(--heaven));transition:width .5s}
+
+/* game */
+.gbar{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.chip{background:var(--panel);border:2px solid var(--line);border-radius:6px;padding:7px 10px;font:400 .78rem var(--display);letter-spacing:.04em;text-transform:uppercase;text-align:center}
+.lvl-row{display:flex;align-items:flex-end;justify-content:space-between;gap:12px}
+.lvl-n{font:400 clamp(2.2rem,10vw,3rem)/1 var(--display);color:var(--sulphur)}
+.lvl-of{font:400 1rem var(--display);color:var(--ash);margin-left:6px}
+.lvl-lab{font:400 .7rem var(--display);letter-spacing:.08em;color:var(--ash);text-transform:uppercase}
+.clock{font:400 clamp(2rem,9vw,2.6rem)/1 var(--display);font-variant-numeric:tabular-nums;color:var(--bone);text-align:right}
+.clock.urgent{color:var(--ember);animation:throb .6s ease-in-out infinite alternate}
+@keyframes throb{to{transform:scale(1.08)}}
+.meter-lab{display:flex;justify-content:space-between;margin-top:12px;font:400 .68rem var(--display);letter-spacing:.08em;text-transform:uppercase;color:var(--ash)}
+.meter-lab+.bar{margin-top:5px}
+.timer{margin-top:12px}
+.timer i{background:var(--heaven);transition:width .1s linear,background .3s}
+.timer i.mid{background:var(--sulphur)}
+.timer i.low{background:var(--ember)}
+
+.qcat{font:400 .72rem var(--display);letter-spacing:.1em;text-transform:uppercase;color:var(--sulphur);margin-bottom:8px}
+#g-q{font:700 clamp(1.15rem,5vw,1.5rem)/1.25 var(--body);overflow-wrap:anywhere}
+
+.stage{position:relative;padding-top:46px}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:54px 12px}
+.tile{display:flex;gap:10px;align-items:flex-start;min-width:0;min-height:84px;background:#321a2b;border:2px solid var(--line);border-radius:6px;padding:12px;font-weight:600;line-height:1.25;overflow-wrap:anywhere;transition:background .15s,border-color .15s}
+.tile b{flex:none;width:1.3em;font:400 .95rem var(--display);color:var(--sulphur)}
+.tile.on{border-color:var(--sulphur);background:#4a2740;box-shadow:0 0 0 3px rgba(245,207,61,.35)}
+.tile.right{border-color:var(--heaven);background:#12443c;box-shadow:0 0 0 3px rgba(70,214,176,.35)}
+.tile.wrong{border-color:var(--hell);background:#5a1420;box-shadow:0 0 0 3px rgba(217,43,58,.4)}
+#runner{position:absolute;left:0;top:0;width:40px;height:58px;z-index:2;pointer-events:none;transition:transform .2s cubic-bezier(.34,1.56,.64,1);filter:drop-shadow(0 4px 0 rgba(0,0,0,.4))}
+#runner svg{display:block;width:40px;height:58px;animation:bob .7s ease-in-out infinite alternate}
+@keyframes bob{to{transform:translateY(-4px) rotate(4deg)}}
+
+.status{background:var(--panel);border:2px solid var(--line);border-radius:6px;padding:10px 14px;font-weight:600;text-align:center;min-height:3em}
+.ctrl{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.ctrl .btn{padding:14px 4px;font-size:clamp(.8rem,3.9vw,1rem)}
+.ctrl .btn-lock{color:var(--ink)}
+
+/* overlays */
+.ov{position:fixed;inset:0;z-index:20;display:grid;place-items:center;padding:20px;overflow:auto;background:radial-gradient(circle at 50% 25%,#8a1425,#1a0508 72%)}
+.ov-box{width:100%;max-width:420px;text-align:center;display:grid;gap:12px}
+.pit{position:relative;height:150px;overflow:hidden}
+.faller{position:absolute;left:50%;top:0;margin-left:-20px;width:40px;height:58px;animation:fall 1.5s cubic-bezier(.5,0,1,.7) forwards}
+@keyframes fall{from{transform:translateY(-70px) rotate(0)}to{transform:translateY(190px) rotate(560deg) scale(.55)}}
+.ov h2{font:400 clamp(2.4rem,13vw,3.6rem)/1 var(--display);color:var(--ember);text-shadow:0 4px 0 #5b0d17;text-transform:uppercase}
+.ov .ans{font-weight:700}
+.ov .drop{font:400 1.1rem var(--display);color:var(--sulphur);text-transform:uppercase}
+#boom{position:fixed;inset:0;z-index:15;display:grid;place-items:center;text-align:center;pointer-events:none;padding:16px}
+.boom-w{font:400 clamp(3rem,17vw,6.4rem)/1 var(--display);color:var(--sulphur);text-shadow:0 5px 0 #7a5a00,0 0 44px rgba(70,214,176,.7);animation:pop .5s cubic-bezier(.2,1.8,.4,1)}
+.boom-s{margin-top:10px;display:inline-block;background:var(--panel);border:2px solid var(--line);border-radius:6px;padding:6px 14px;font:400 1rem var(--display);text-transform:uppercase}
+@keyframes pop{from{transform:scale(.2);opacity:0}to{transform:scale(1);opacity:1}}
+#fx{position:fixed;inset:0;z-index:16;pointer-events:none}
+
+/* win */
+.win{display:grid;gap:14px;text-align:center}
+.win-h{font:400 clamp(1.8rem,9vw,2.8rem)/1 var(--display);color:var(--sulphur);text-transform:uppercase}
+#stairs{display:block;width:100%;max-width:100%;height:auto;background:linear-gradient(180deg,#1f5a7a,#f5d98a);border:2px solid var(--line);border-radius:6px}
+#stairs .stp{transition:opacity .25s}
+#climber{transition:transform .26s ease-out}
+#stairs .tro{transition:filter .6s}
+#stairs .tro.glow{filter:drop-shadow(0 0 8px #fff6c9) drop-shadow(0 0 18px #f5cf3d)}
+.trophy-big{width:min(220px,70%);height:auto;margin:0 auto;display:block;filter:drop-shadow(0 0 16px rgba(245,207,61,.7));animation:shine 2s ease-in-out infinite alternate}
+@keyframes shine{to{filter:drop-shadow(0 0 28px rgba(245,207,61,1))}}
+#w-card{display:grid;gap:12px;justify-items:center}
+#w-line{font-weight:700;overflow-wrap:anywhere}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important}
+}
+</style>
+
+<div id="sky" aria-hidden="true"></div>
+<main id="app">
+
+  <section id="s-login" class="screen">
+    <h1 class="logo"><span class="logo-hell">Hell</span><span class="logo-out">Out There</span></h1>
+    <p class="tag">Answer right and climb. Answer wrong and fall five levels.</p>
+    <form id="login" class="panel" novalidate>
+      <label for="email">Your Gmail ID</label>
+      <input id="email" type="email" autocomplete="email" inputmode="email" placeholder="yourname@gmail.com" spellcheck="false">
+      <p id="login-err" class="err" role="alert" hidden></p>
+      <button class="btn" type="submit">Enter the pit</button>
+      <p class="fine">Your progress is saved under this Gmail ID on this device. Type the same ID next time to continue where you stopped.</p>
+    </form>
+    <ul class="rules">
+      <li><b>60 seconds</b><span>The clock starts when you press Start on a question.</span></li>
+      <li><b>Stop, then Enter</b><span>The climber hops across the options. Stop it on your answer, then press Enter to lock it.</span></li>
+      <li><b>100 levels</b><span>A wrong answer drops you 5 levels. Reach level 100 to climb the stairs and take the trophy.</span></li>
+    </ul>
+  </section>
+
+  <section id="s-menu" class="screen" hidden>
+    <div class="menu-top">
+      <h2 class="hello">Welcome,<br><span id="m-name"></span></h2>
+      <button class="btn btn-ghost" id="m-switch" type="button">Switch user</button>
+    </div>
+    <p class="tag">Pick how hard the climb is.</p>
+    <div id="m-cards"></div>
+  </section>
+
+  <section id="s-game" class="screen" hidden>
+    <div class="gbar">
+      <button class="btn btn-ghost" id="g-back" type="button">← Menu</button>
+      <span class="chip" id="g-diff"></span>
+      <button class="btn btn-ghost" id="g-mute" type="button" aria-pressed="false">Sound on</button>
+    </div>
+    <div class="panel">
+      <div class="lvl-row">
+        <div><div class="lvl-lab">Level</div><span class="lvl-n" id="g-level">1</span><span class="lvl-of">/ 100</span></div>
+        <div class="clock" id="g-clock" aria-label="Seconds left">60</div>
+      </div>
+      <div class="meter-lab"><span>Hell</span><span>Heaven</span></div>
+      <div class="bar"><i id="g-meter"></i></div>
+      <div class="bar timer" aria-hidden="true"><i id="g-timer" style="width:100%"></i></div>
+    </div>
+    <div class="panel">
+      <p class="qcat" id="g-cat"></p>
+      <h2 id="g-q"></h2>
+    </div>
+    <div class="stage">
+      <div class="opts" id="opts"></div>
+      <div id="runner" aria-hidden="true"></div>
+    </div>
+    <p class="status" id="g-status" aria-live="polite"></p>
+    <div class="ctrl">
+      <button class="btn" id="b-start" type="button">Start</button>
+      <button class="btn btn-stop" id="b-stop" type="button">Stop</button>
+      <button class="btn btn-lock" id="b-enter" type="button">Enter</button>
+    </div>
+  </section>
+
+  <section id="s-win" class="screen" hidden>
+    <div class="panel win">
+      <h2 class="win-h">You escaped hell</h2>
+      <p id="w-sub"></p>
+      <svg id="stairs" viewBox="0 0 360 280" role="img" aria-label="A climber walking up ten stairs toward a golden trophy"></svg>
+      <button class="btn btn-win" id="w-take" type="button" hidden>Take your trophy</button>
+      <div id="w-card" hidden>
+        <div id="w-trophy" style="width:100%"></div>
+        <p id="w-line"></p>
+        <button class="btn" id="w-menu" type="button">Back to menu</button>
+      </div>
+    </div>
+  </section>
+
+  <footer class="credit">Developed by Mimansa Singh and Raghav</footer>
+</main>
+
+<div id="ov" class="ov" hidden></div>
+<div id="boom" hidden></div>
+<canvas id="fx" aria-hidden="true"></canvas>
+
+<script>
+/* ---------- Question engine (no DOM use) ---------- */
+var R=function(a,b){return Math.floor(Math.random()*(b-a+1))+a};
+var pick=function(a){return a[R(0,a.length-1)]};
+var shuf=function(a){var b=a.slice();for(var i=b.length-1;i>0;i--){var j=R(0,i);var t=b[i];b[i]=b[j];b[j]=t}return b};
+var gcd=function(a,b){return b?gcd(b,a%b):a};
+var fmtN=function(n){return String(n).replace('-','−')};
+var ord=function(n){var s=['th','st','nd','rd'],v=n%100;return n+(s[(v-20)%10]||s[v]||s[0])};
+var Q=function(q,a,w,cat){return{q:q,a:a,w:w,cat:cat}};
+
+/* numeric options: correct c, candidate wrong values, formatter, minimum allowed */
+function nums(c,cands,fmt,min){
+  fmt=fmt||fmtN; if(min===undefined)min=-Infinity;
+  var out=[],seen={};seen[c]=1;
+  shuf(cands).forEach(function(x){if(out.length<3&&x>=min&&!seen[x]&&isFinite(x)&&x===Math.round(x*100)/100){seen[x]=1;out.push(x)}});
+  for(var k=1;out.length<3&&k<500;k++){[c+k,c-k].forEach(function(x){if(out.length<3&&x>=min&&!seen[x]){seen[x]=1;out.push(x)}})}
+  return{a:fmt(c),w:out.map(fmt)};
+}
+function frac(n,d){var g=gcd(n,d);return(n/g)+'/'+(d/g)}
+function term(c,v){var s=c<0?'−':'+';var m=Math.abs(c);return' '+s+' '+(v&&m===1?'':m)+v}
+
+var NAMES=['Riya','Aman','Meena','Rohan','Sana','Kabir','Isha','Dev'];
+
+var EASY_MATH=[
+ function(){var a=R(12,60),b=R(11,39),c=a+b,o=nums(c,[c+1,c-1,c+10,c-10,c+2,c-2],fmtN,0);return Q(a+' + '+b+' = ?',o.a,o.w,'math')},
+ function(){var a=R(30,99),b=R(11,a-10),c=a-b,o=nums(c,[c+1,c-1,c+10,c-10,c+2,c-2],fmtN,0);return Q(a+' − '+b+' = ?',o.a,o.w,'math')},
+ function(){var a=R(2,10),b=R(2,10),c=a*b,o=nums(c,[c+a,c-a,c+b,c-b,c+1,c-1],fmtN,0);return Q(a+' × '+b+' = ?',o.a,o.w,'math')},
+ function(){var b=R(2,9),q=R(2,10),a=b*q,o=nums(q,[q+1,q-1,q+2,q-2,q+b],fmtN,1);return Q(a+' ÷ '+b+' = ?',o.a,o.w,'math')},
+ function(){var n=pick(NAMES),a=R(5,30),b=R(3,20),c=a+b,o=nums(c,[c+1,c-1,c+2,c-2,a,b],fmtN,0);return Q(n+' has '+a+' apples and buys '+b+' more. How many apples does '+n+' have now?',o.a,o.w,'math')},
+ function(){var s=R(1,9),d=R(2,6),c=s+4*d,o=nums(c,[c+1,c-1,c+d,c-d,c+2],fmtN,0);return Q('What comes next? '+s+', '+(s+d)+', '+(s+2*d)+', '+(s+3*d)+', ?',o.a,o.w,'math')},
+ function(){var s=R(2,12),c=4*s,o=nums(c,[2*s,s*s,c+4,c-4,c+s,c-s],fmtN,1);return Q('A square has sides of '+s+' cm. What is its perimeter?',o.a,o.w,'math')},
+ function(){var n=pick(NAMES),a=R(20,60),b=R(5,a-5),c=a-b,o=nums(c,[c+1,c-1,c+10,c-10,a+b],fmtN,0);return Q(n+' had '+a+' stickers and gave away '+b+'. How many stickers are left?',o.a,o.w,'math')}
+];
+var MED_MATH=[
+ function(){var p=pick([10,20,25,50]),n=R(2,20)*20,c=n*p/100,o=nums(c,[c+p,c-p,c*2,c+10,c-10,c+5],fmtN,1);return Q('What is '+p+'% of '+n+'?',o.a,o.w,'math')},
+ function(){var x=R(1,12),a=R(2,9),b=R(1,20),c=a*x+b,o=nums(x,[x+1,x-1,x+2,x-2,x+3],fmtN,1);return Q('Solve for x: '+a+'x + '+b+' = '+c,o.a,o.w,'math')},
+ function(){var l=R(4,20),w=R(2,l-1),c=l*w,u=function(n){return n+' cm²'},o=nums(c,[2*(l+w),c+l,c-l,c+w,c-w,l+w],u,1);return Q('Find the area of a rectangle with length '+l+' cm and width '+w+' cm.',o.a,o.w,'math')},
+ function(){var l=R(4,20),w=R(2,l-1),c=2*(l+w),u=function(n){return n+' cm'},o=nums(c,[l*w,c+2,c-2,c+4,c-4,l+w],u,1);return Q('Find the perimeter of a rectangle with length '+l+' cm and width '+w+' cm.',o.a,o.w,'math')},
+ function(){var b=R(3,15)*2,h=R(3,14),c=b*h/2,u=function(n){return n+' cm²'},o=nums(c,[b*h,c+b,c-b,c+h,c-h,b+h],u,1);return Q('Find the area of a triangle with base '+b+' cm and height '+h+' cm.',o.a,o.w,'math')},
+ function(){var p=pick([[4,6],[6,8],[5,10],[9,12],[8,12],[10,15],[12,18],[14,21]]),l=p[0]*p[1]/gcd(p[0],p[1]),o=nums(l,[p[0]*p[1],l*2,l+6,l-6,l+12,l+p[0]],fmtN,1);return Q('What is the LCM of '+p[0]+' and '+p[1]+'?',o.a,o.w,'math')},
+ function(){var p=pick([[12,18],[16,24],[20,30],[18,27],[24,36],[28,42],[15,25]]),g=gcd(p[0],p[1]),o=nums(g,[1,2,3,4,5,6,g+1,g*2,g+2],fmtN,1);return Q('What is the HCF of '+p[0]+' and '+p[1]+'?',o.a,o.w,'math')},
+ function(){var P=pick([1000,2000,5000]),r=pick([5,10]),t=pick([2,3]),c=P*r*t/100,u=function(n){return'₹'+n},o=nums(c,[c*2,c+P/10,c-P/10,P*r/100,c+100,c-100],u,1);return Q('Find the simple interest on ₹'+P+' at '+r+'% per year for '+t+' years.',o.a,o.w,'math')},
+ function(){var n=R(11,25),o=nums(n,[n+1,n-1,n+2,n-2,n*2,n+10],fmtN,1);return Q('What is the square root of '+(n*n)+'?',o.a,o.w,'math')},
+ function(){var a=R(2,5),b=R(a+1,7),k=R(10,30),N=k*(a+b),c=k*b,o=nums(c,[k*a,N,c+k,c-k,c+2*k],function(n){return'₹'+n},1);return Q('₹'+N+' is divided between two friends in the ratio '+a+':'+b+'. How much is the bigger share?',o.a,o.w,'math')},
+ function(){var a=[R(5,30),R(5,30),R(5,30),R(5,30)],s=a[0]+a[1]+a[2]+a[3],e=(5-s%5)%5+5*R(1,3),m=(s+e)/5,o=nums(m,[m+1,m-1,m+2,m-2,m+3],fmtN,1);return Q('What is the mean of '+a.concat([e]).join(', ')+'?',o.a,o.w,'math')},
+ function(){var a=-R(5,20),b=R(3,18),c=a+b,o=nums(c,[c+2,c-2,-c,a-b,c+1,c-1],fmtN);return Q('Find the value of ('+fmtN(a)+') + '+b+'.',o.a,o.w,'math')},
+ function(){var r=pick([7,14,21]),c=22*r*r/7,o=nums(c,[2*c,c/2,44*r/7,c+22,c-22],fmtN,1);return Q('Find the area of a circle of radius '+r+' cm. (Take π = 22/7)',o.a+' cm²',o.w.map(function(w){return w+' cm²'}),'math')}
+];
+var HARD_MATH=[
+ function(){
+  var r1,r2;do{r1=R(-6,6);r2=R(-6,6)}while(!r1||!r2||Math.abs(r1)===Math.abs(r2));
+  var b=-(r1+r2),c=r1*r2;
+  var f=function(x,y){var s=[x,y].sort(function(m,n){return m-n});return fmtN(s[0])+' and '+fmtN(s[1])};
+  var A=Math.abs(r1),B=Math.abs(r2),cor=f(r1,r2),seen={};seen[cor]=1;var w=[];
+  [[-r1,-r2],[A,B],[-A,-B],[r1,-r2],[-r1,r2]].forEach(function(p){var s=f(p[0],p[1]);if(!seen[s]&&w.length<3){seen[s]=1;w.push(s)}});
+  return Q('Find the roots of x²'+term(b,'x')+term(c,'')+' = 0',cor,w,'math');
+ },
+ function(){var a=R(2,15),d=R(2,9),n=R(10,25),c=a+(n-1)*d,o=nums(c,[c+d,c-d,a+n*d,a+(n-2)*d,c+a,c+2],fmtN,1);return Q('In an AP the first term is '+a+' and the common difference is '+d+'. Find its '+ord(n)+' term.',o.a,o.w,'math')},
+ function(){var n=pick([10,12,14,16,20]),a=R(2,10),d=R(2,6),c=n*(2*a+(n-1)*d)/2,o=nums(c,[n*(2*a+(n-1)*d),c+n,c-n,c+d*n,c-d*n,c+a],fmtN,1);return Q('Find the sum of the first '+n+' terms of the AP whose first term is '+a+' and common difference is '+d+'.',o.a,o.w,'math')},
+ function(){var t=pick([[3,4,5],[5,12,13],[8,15,17]]),k=R(1,3),x=R(-5,5),y=R(-5,5),P=function(a,b){return'('+fmtN(a)+', '+fmtN(b)+')'},c=t[2]*k,o=nums(c,[t[0]*k+t[1]*k,c+1,c-1,c+2,t[1]*k,c*c],function(n){return n+' units'},1);return Q('Find the distance between the points '+P(x,y)+' and '+P(x+t[0]*k,y+t[1]*k)+'.',o.a,o.w,'math')},
+ function(){var r=pick([7,14]),h=R(2,9),c=22*r*r*h/7,u=function(n){return n+' cm³'},o=nums(c,[2*c,c+22*r,c-22*r,c+22*h,c-22*h,c+100],u,1);return Q('Find the volume of a cylinder with radius '+r+' cm and height '+h+' cm. (Take π = 22/7)',o.a,o.w,'math')},
+ function(){
+  var r=R(2,9),b=R(2,9);while(b===r)b=R(2,9);var t=r+b,cor=frac(r,t),seen={};seen[cor]=1;var w=[];
+  [frac(b,t),frac(r,b),frac(b,r),frac(r+1,t),frac(r,t+1),frac(t,r)].forEach(function(s){if(!seen[s]&&w.length<3){seen[s]=1;w.push(s)}});
+  return Q('A bag has '+r+' red marbles and '+b+' blue marbles. One marble is picked at random. What is the probability that it is red?',cor,w,'math');
+ },
+ function(){var n=R(5,12),c=(n-2)*180,u=function(x){return x+'°'},o=nums(c,[n*180,(n-1)*180,(n-2)*90,(n-3)*180,c+90,c-90],u,1);return Q('What is the sum of the interior angles of a polygon with '+n+' sides?',o.a,o.w,'math')},
+ function(){var a=R(1,4),b=R(-8,8)||3,c=R(-5,5)||2,D=b*b-4*a*c,o=nums(D,[b*b+4*a*c,b*b-2*a*c,4*a*c-b*b,D+4,D-4,D+2*a],fmtN);return Q('Find the discriminant of the equation '+(a===1?'':a)+'x²'+term(b,'x')+term(c,'')+' = 0.',o.a,o.w,'math')},
+ function(){var x=R(1,9),y=R(1,9);while(y===x)y=R(1,9);var s=x+y,p=x*y,c=s*s-2*p,o=nums(c,[s*s-p,s*s+2*p,s*s-4*p,s*s,c+2,c-2],fmtN,1);return Q('If x + y = '+s+' and xy = '+p+', what is the value of x² + y²?',o.a,o.w,'math')},
+ function(){var x=R(3,12),y=R(1,x-1),o=nums(x,[y,x+1,x-1,x+y,x+2,x-2],fmtN,1);return Q('If x + y = '+(x+y)+' and x − y = '+(x-y)+', what is the value of x?',o.a,o.w,'math')}
+];
+var HARD_TRIG=[
+ ['What is the value of sin 30°?','1/2','√3/2','1','1/√2'],
+ ['What is the value of tan 60°?','√3','1/√3','1','√3/2'],
+ ['What is the value of sin 45°?','1/√2','1/2','√3/2','1'],
+ ['What is the value of cos 30°?','√3/2','1/2','1/√2','1'],
+ ['What is the value of tan 45° + sin 90°?','2','1','0','1/2'],
+ ['What is the value of sin²θ + cos²θ?','1','0','2','sin 2θ'],
+ ['What is the value of 2 sin 30° cos 30°?','√3/2','1/2','1','√3']
+];
+
+var EASY_GK=[
+ ['What is the capital of India?','New Delhi','Mumbai','Kolkata','Chennai'],
+ ['Which animal is the national animal of India?','Tiger','Lion','Elephant','Leopard'],
+ ['How many days are there in a week?','7','5','6','8'],
+ ['Which is the national bird of India?','Peacock','Parrot','Sparrow','Crow'],
+ ['How many colours are there in a rainbow?','7','5','6','8'],
+ ['Which festival is known as the festival of lights?','Diwali','Holi','Eid','Baisakhi'],
+ ['How many months are there in a year?','12','10','11','13'],
+ ['Which is the national flower of India?','Lotus','Rose','Marigold','Jasmine'],
+ ['What is the currency of India?','Rupee','Dollar','Yen','Pound'],
+ ['Who is called the Father of the Nation in India?','Mahatma Gandhi','Jawaharlal Nehru','Subhas Chandra Bose','Sardar Patel'],
+ ['In which city is the Taj Mahal?','Agra','Delhi','Jaipur','Lucknow'],
+ ['Which is the largest ocean on Earth?','Pacific Ocean','Atlantic Ocean','Indian Ocean','Arctic Ocean'],
+ ['How many continents are there?','7','5','6','8'],
+ ['How many sides does a hexagon have?','6','5','7','8'],
+ ['Which colour is at the top of the Indian flag?','Saffron','White','Green','Blue'],
+ ['On which day do we celebrate Independence Day in India?','15 August','26 January','2 October','14 November'],
+ ['Which is the biggest animal on land?','Elephant','Giraffe','Rhinoceros','Hippopotamus'],
+ ['How many letters are there in the English alphabet?','26','24','25','28'],
+ ['Which is the national fruit of India?','Mango','Apple','Banana','Orange']
+];
+var EASY_SCI=[
+ ['Which gas do we breathe in to stay alive?','Oxygen','Carbon dioxide','Nitrogen','Hydrogen'],
+ ['Which animal gives us milk?','Cow','Lion','Snake','Eagle'],
+ ['Plants make their food using which of these?','Sunlight','Moonlight','Sand','Plastic'],
+ ['In which direction does the Sun rise?','East','West','North','South'],
+ ['Water becomes what when it freezes?','Ice','Steam','Smoke','Sand'],
+ ['How many legs does a spider have?','8','6','4','10'],
+ ['Which organ pumps blood around the body?','Heart','Lungs','Brain','Stomach'],
+ ['Which star is closest to Earth?','The Sun','Sirius','Polaris','Betelgeuse'],
+ ['Which part of the body do we use to see?','Eyes','Ears','Nose','Tongue'],
+ ['Which of these is a mammal?','Dolphin','Shark','Frog','Eagle'],
+ ['Which planet is known as the Red Planet?','Mars','Venus','Saturn','Mercury'],
+ ['A baby frog is called a?','Tadpole','Cub','Calf','Chick'],
+ ['Which of these gives out its own light?','The Sun','The Moon','A mirror','A stone'],
+ ['How many legs does an insect have?','6','4','8','10'],
+ ['Which of these is a living thing?','A tree','A rock','A chair','A cloud'],
+ ['What do bees make?','Honey','Milk','Butter','Silk']
+];
+var MED_GK=[
+ ['Who wrote the Indian National Anthem?','Rabindranath Tagore','Bankim Chandra Chatterjee','Muhammad Iqbal','Sarojini Naidu'],
+ ['Which is the largest planet in our solar system?','Jupiter','Saturn','Neptune','Earth'],
+ ['Which Indian state is the largest by area?','Rajasthan','Madhya Pradesh','Maharashtra','Uttar Pradesh'],
+ ['What is the capital of Australia?','Canberra','Sydney','Melbourne','Perth'],
+ ['Who was the first Prime Minister of India?','Jawaharlal Nehru','Sardar Patel','Mahatma Gandhi','Rajendra Prasad'],
+ ['Which is the smallest continent by area?','Australia','Europe','Antarctica','South America'],
+ ['In which year did India become independent?','1947','1942','1950','1930'],
+ ['The Great Wall is found in which country?','China','Japan','India','Mongolia'],
+ ['Which is the largest hot desert in the world?','Sahara','Gobi','Thar','Kalahari'],
+ ['Who invented the telephone?','Alexander Graham Bell','Thomas Edison','Nikola Tesla','Guglielmo Marconi'],
+ ['Which is the highest mountain peak in the world?','Mount Everest','K2','Kangchenjunga','Makalu'],
+ ['Who was the first person to walk on the Moon?','Neil Armstrong','Yuri Gagarin','Rakesh Sharma','Alan Shepard'],
+ ['Who wrote ‘The Discovery of India’?','Jawaharlal Nehru','Mahatma Gandhi','Rabindranath Tagore','B. R. Ambedkar'],
+ ['On which date is National Science Day celebrated in India?','28 February','5 September','14 November','2 October'],
+ ['What is the capital of Japan?','Tokyo','Kyoto','Osaka','Seoul'],
+ ['Which Indian city is known as the Pink City?','Jaipur','Jodhpur','Udaipur','Agra'],
+ ['Who painted the Mona Lisa?','Leonardo da Vinci','Michelangelo','Vincent van Gogh','Pablo Picasso']
+];
+var MED_SCI=[
+ ['What is the chemical symbol for sodium?','Na','So','S','Sd'],
+ ['Which gas makes up most of Earth’s atmosphere?','Nitrogen','Oxygen','Carbon dioxide','Argon'],
+ ['What is the SI unit of force?','Newton','Joule','Watt','Pascal'],
+ ['Which part of the cell is called the powerhouse of the cell?','Mitochondria','Nucleus','Ribosome','Golgi body'],
+ ['What is the chemical formula of water?','H₂O','HO₂','H₂O₂','OH'],
+ ['What is the pH value of pure water?','7','0','1','14'],
+ ['Approximately how fast does light travel?','3 × 10⁸ m/s','3 × 10⁶ m/s','3 × 10⁵ m/s','3 × 10¹⁰ m/s'],
+ ['Which vitamin do we get from sunlight?','Vitamin D','Vitamin A','Vitamin C','Vitamin K'],
+ ['In which part of a plant does most photosynthesis take place?','Leaves','Roots','Stem','Flowers'],
+ ['Which is the hardest natural substance?','Diamond','Graphite','Quartz','Iron'],
+ ['Which blood cells carry oxygen?','Red blood cells','White blood cells','Platelets','Plasma'],
+ ['How many bones does an adult human body have?','206','201','212','300'],
+ ['Which acid is found in lemon?','Citric acid','Acetic acid','Lactic acid','Tartaric acid'],
+ ['Which metal is liquid at room temperature?','Mercury','Sodium','Iron','Lead'],
+ ['Which planet is famous for its bright rings?','Saturn','Mars','Mercury','Venus'],
+ ['What is it called when water changes into vapour?','Evaporation','Condensation','Sublimation','Freezing'],
+ ['Which instrument measures temperature?','Thermometer','Barometer','Ammeter','Odometer']
+];
+var HARD_SCI=[
+ ['What is the SI unit of work or energy?','Joule','Newton','Watt','Pascal'],
+ ['What is the atomic number of carbon?','6','12','8','14'],
+ ['Newton’s first law of motion is also known as the law of?','Inertia','Gravitation','Action and reaction','Momentum'],
+ ['What is the chemical formula of baking soda?','NaHCO₃','Na₂CO₃','NaOH','NaCl'],
+ ['Which lens is used to correct myopia (short-sightedness)?','Concave lens','Convex lens','Cylindrical lens','Bifocal lens'],
+ ['Who gave the three laws of planetary motion?','Johannes Kepler','Isaac Newton','Galileo Galilei','Nicolaus Copernicus'],
+ ['What is the chemical formula of bleaching powder?','CaOCl₂','CaCl₂','Ca(OH)₂','CaCO₃'],
+ ['Which hormone controls the blood sugar level?','Insulin','Thyroxine','Adrenaline','Oestrogen'],
+ ['Which part of the human eye controls the size of the pupil?','Iris','Cornea','Retina','Optic nerve'],
+ ['According to Ohm’s law, which relation is correct?','V = I × R','V = I ÷ R','I = V × R','R = V × I'],
+ ['How many valence electrons does a chlorine atom have?','7','1','5','8'],
+ ['Gregor Mendel is known as the father of?','Genetics','Evolution','Taxonomy','Ecology'],
+ ['What is the value of acceleration due to gravity on Earth (approx.)?','9.8 m/s²','8.9 m/s²','10.8 m/s²','6.7 m/s²'],
+ ['Which of these is a noble gas?','Argon','Nitrogen','Oxygen','Chlorine'],
+ ['What is the unit of electrical resistance?','Ohm','Volt','Ampere','Coulomb'],
+ ['Which mirror is used as a rear-view mirror in vehicles?','Convex mirror','Concave mirror','Plane mirror','Cylindrical mirror'],
+ ['Splitting of a heavy nucleus into lighter nuclei is called?','Nuclear fission','Nuclear fusion','Ionisation','Photosynthesis'],
+ ['Which layer of the atmosphere contains the ozone layer?','Stratosphere','Troposphere','Mesosphere','Thermosphere']
+];
+var HARD_GK=[
+ ['Which Article of the Indian Constitution abolishes untouchability?','Article 17','Article 14','Article 15','Article 21'],
+ ['Who was the first Governor-General of independent India?','Lord Mountbatten','C. Rajagopalachari','Lord Dalhousie','Lord Wavell'],
+ ['The French Revolution began in which year?','1789','1776','1799','1815'],
+ ['The Constitution of India came into force on?','26 January 1950','15 August 1947','26 November 1949','2 October 1950'],
+ ['Who is known as the Iron Man of India?','Sardar Vallabhbhai Patel','Jawaharlal Nehru','Lal Bahadur Shastri','Subhas Chandra Bose'],
+ ['Who chaired the Drafting Committee of the Indian Constitution?','B. R. Ambedkar','Rajendra Prasad','Jawaharlal Nehru','Sardar Patel'],
+ ['The Battle of Plassey was fought in which year?','1757','1764','1857','1526'],
+ ['Which movement began in 1930 with the Dandi March?','Civil Disobedience Movement','Non-Cooperation Movement','Quit India Movement','Swadeshi Movement'],
+ ['Which imaginary line divides Earth into Northern and Southern Hemispheres?','Equator','Tropic of Cancer','Prime Meridian','Tropic of Capricorn'],
+ ['Which is the longest peninsular river of India?','Godavari','Krishna','Kaveri','Narmada']
+];
+
+var BANK={
+ easy:{math:EASY_MATH,gk:EASY_GK,sci:EASY_SCI},
+ medium:{math:MED_MATH,gk:MED_GK,sci:MED_SCI},
+ hard:{math:HARD_MATH,gk:HARD_GK,sci:HARD_SCI}
+};
+var CATNAME={math:'Maths',gk:'General knowledge',sci:'Science'};
+var usedIdx={},recentQ=[];
+function fromPool(key,pool,cat){
+  var u=usedIdx[key]||(usedIdx[key]={}),n=Object.keys(u).length;
+  if(n>=pool.length){usedIdx[key]=u={}}
+  var i;do{i=R(0,pool.length-1)}while(u[i]);u[i]=1;
+  var p=pool[i];return Q(p[0],p[1],p.slice(2),cat);
+}
+function makeQuestion(diff){
+  var q,tries=0;
+  do{
+    var cat=pick(['math','gk','sci']),b=BANK[diff];
+    if(cat==='math'){
+      if(diff==='hard'&&Math.random()<.18){q=fromPool('trig',HARD_TRIG,'math')}
+      else{q=pick(b.math)()}
+    }else{q=fromPool(diff+cat,b[cat],cat)}
+    tries++;
+  }while(recentQ.indexOf(q.q)>-1&&tries<8);
+  recentQ.push(q.q);if(recentQ.length>12)recentQ.shift();
+  var opts=shuf([q.a].concat(q.w));
+  return{q:q.q,cat:CATNAME[q.cat],a:q.a,opts:opts,ci:opts.indexOf(q.a)};
+}
+</script>
+
+<script>
+/* ---------- Game ---------- */
+(function(){
+var $=function(s){return document.querySelector(s)};
+var DIFF={
+  easy:{name:'Easy',cls:'Class 1–5',ms:800},
+  medium:{name:'Medium',cls:'Class 6–8',ms:600},
+  hard:{name:'Hard',cls:'Class 9–10',ms:460}
+};
+var TOTAL=100,FALL=5,LIMIT=60;
+var S={email:'',data:null,diff:'easy',level:1,q:null,state:'idle',idx:0,deadline:0,tick:null,hop:null,mute:false,winTimers:[]};
+
+/* storage: per-Gmail progress in this browser; falls back to memory if storage is blocked */
+var mem={};
+var store={
+  get:function(k){try{return localStorage.getItem(k)}catch(e){return mem[k]===undefined?null:mem[k]}},
+  set:function(k,v){try{localStorage.setItem(k,v)}catch(e){mem[k]=v}}
+};
+function load(email){
+  var d=null;try{d=JSON.parse(store.get('hot:v1:'+email))}catch(e){}
+  d=d||{};
+  Object.keys(DIFF).forEach(function(k){
+    var base={level:1,best:1,right:0,falls:0,wins:0},x=d[k]||{};
+    d[k]={};Object.keys(base).forEach(function(f){d[k][f]=typeof x[f]==='number'?x[f]:base[f]});
+    d[k].level=Math.min(TOTAL,Math.max(1,d[k].level));
+  });
+  return d;
+}
+function save(){store.set('hot:v1:'+S.email,JSON.stringify(S.data));store.set('hot:last',S.email)}
+
+/* graphics */
+var RUNNER_G='<circle cx="20" cy="11" r="8" fill="#f1c9a5"/><path d="M11.5 10.5C11 4 15 1.5 20.5 1.5S29.5 5 28.5 10.5C25 7 19 6.5 11.5 10.5z" fill="#2b1620"/><circle cx="17" cy="12" r="1.3" fill="#2b1620"/><circle cx="23" cy="12" r="1.3" fill="#2b1620"/><path d="M12 24L4 12M28 24l8-12" stroke="#f5cf3d" stroke-width="5" stroke-linecap="round"/><rect x="12" y="19" width="16" height="21" rx="5" fill="#f5cf3d"/><path d="M16.5 40L14.5 54M23.5 40l2 14" stroke="#46d6b0" stroke-width="5.5" stroke-linecap="round"/><path d="M12 55h5M23 55h5" stroke="#2b1620" stroke-width="4" stroke-linecap="round"/>';
+var RUNNER='<svg viewBox="0 0 40 58" width="40" height="58">'+RUNNER_G+'</svg>';
+var TROPHY_G='<path d="M30 10h40v28c0 16-9 27-20 27S30 54 30 38z" fill="#f5cf3d"/><path d="M30 16H14c0 18 8 26 19 28M70 16h16c0 18-8 26-19 28" fill="none" stroke="#e0a915" stroke-width="6" stroke-linecap="round"/><rect x="45" y="64" width="10" height="16" fill="#e0a915"/><rect x="32" y="80" width="36" height="9" rx="2" fill="#f5cf3d"/><rect x="26" y="89" width="48" height="10" rx="2" fill="#b4781a"/><path d="M38 16v22c0 8 3 14 8 18" stroke="#fff6c9" stroke-width="4" stroke-linecap="round" fill="none" opacity=".8"/><path d="M50 22l3.5 7 7.5 1-5.5 5 1.5 7.5-7-4-7 4 1.5-7.5-5.5-5 7.5-1z" fill="#b4781a"/>';
+
+/* sky colour follows altitude */
+var SKY=[[0,'#1a0508','#8a1425'],[.5,'#2a1238','#c2542f'],[1,'#1f5a7a','#f5d98a']];
+function hex(h){return[1,3,5].map(function(i){return parseInt(h.substr(i,2),16)})}
+function mix(a,b,t){var A=hex(a),B=hex(b);return'#'+A.map(function(v,i){return Math.round(v+(B[i]-v)*t).toString(16).padStart(2,'0')}).join('')}
+function sky(level){
+  var t=Math.max(0,Math.min(1,(level-1)/(TOTAL-1))),i=t<.5?0:1,a=SKY[i],b=SKY[i+1],u=(t-a[0])/(b[0]-a[0]);
+  $('#sky').style.background='linear-gradient(180deg,'+mix(a[1],b[1],u)+','+mix(a[2],b[2],u)+')';
+}
+
+/* sound */
+var AC=null;
+function ensureAudio(){
+  if(AC===null){try{AC=new(window.AudioContext||window.webkitAudioContext)()}catch(e){AC=false}}
+  if(AC&&AC.state==='suspended'){try{AC.resume()}catch(e){}}
+}
+function tone(f,t,d,type,v){
+  if(!AC||S.mute)return;
+  var o=AC.createOscillator(),g=AC.createGain(),n=AC.currentTime+t;
+  o.type=type||'sine';o.frequency.setValueAtTime(f,n);
+  g.gain.setValueAtTime(v||.1,n);g.gain.exponentialRampToValueAtTime(.0001,n+d);
+  o.connect(g);g.connect(AC.destination);o.start(n);o.stop(n+d+.02);
+}
+function sfx(k){
+  if(k==='ok')[523,659,784,1047].forEach(function(f,i){tone(f,i*.09,.28,'triangle',.12)});
+  else if(k==='bad')[220,165,110,82].forEach(function(f,i){tone(f,i*.15,.32,'sawtooth',.08)});
+  else if(k==='win')[523,659,784,1047,784,1047,1319].forEach(function(f,i){tone(f,i*.12,.3,'triangle',.12)});
+}
+function blip(){tone(660,0,.05,'square',.02)}
+
+/* screens */
+function show(n){
+  ['login','menu','game','win'].forEach(function(s){$('#s-'+s).hidden=s!==n});
+  window.scrollTo(0,0);
+  if(n==='game')requestAnimationFrame(placeRunner);
+}
+
+/* login */
+function err(m){var e=$('#login-err');e.textContent=m;e.hidden=!m}
+$('#email').value=store.get('hot:last')||'';
+$('#login').addEventListener('submit',function(e){
+  e.preventDefault();
+  var v=$('#email').value.trim().toLowerCase();
+  if(!/^[a-z0-9][a-z0-9._+-]*@gmail\.com$/.test(v)){err('Enter a valid Gmail ID, like yourname@gmail.com');return}
+  err('');S.email=v;S.data=load(v);save();renderMenu();show('menu');
+});
+$('#m-switch').addEventListener('click',function(){stopAll();sky(1);show('login');$('#email').focus()});
+
+/* menu */
+function renderMenu(){
+  sky(1);
+  $('#m-name').textContent=S.email.split('@')[0];
+  var box=$('#m-cards');box.textContent='';
+  Object.keys(DIFF).forEach(function(k){
+    var d=S.data[k],c=DIFF[k],b=document.createElement('button');
+    b.type='button';b.className='dcard '+k;
+    b.innerHTML='<span class="dcard-h"><span class="dcard-n"></span><span class="dcard-c"></span></span><span class="dcard-l"></span><span class="bar"><i></i></span><span class="dcard-s"></span>';
+    b.querySelector('.dcard-n').textContent=c.name;
+    b.querySelector('.dcard-c').textContent=c.cls;
+    b.querySelector('.dcard-l').textContent=(d.level>1||d.best>1?'Continue at level ':'Start at level ')+d.level+' of '+TOTAL;
+    b.querySelector('.bar i').style.width=d.level+'%';
+    b.querySelector('.dcard-s').textContent='Best level '+d.best+'  ·  Falls '+d.falls+'  ·  Trophies '+d.wins;
+    b.addEventListener('click',function(){begin(k)});
+    box.appendChild(b);
+  });
+}
+
+/* game */
+function clearTimers(){clearInterval(S.tick);clearTimeout(S.hop);S.tick=null;S.hop=null}
+function stopAll(){clearTimers();S.winTimers.forEach(clearTimeout);S.winTimers=[];$('#ov').hidden=true;$('#boom').hidden=true}
+function begin(k){
+  S.diff=k;S.level=S.data[k].level;
+  $('#g-diff').textContent=DIFF[k].name+' · '+DIFF[k].cls;
+  $('#runner').innerHTML=RUNNER;
+  show('game');renderLevel();ready();
+}
+function renderLevel(){
+  $('#g-level').textContent=S.level;
+  $('#g-meter').style.width=S.level+'%';
+  sky(S.level);
+}
+function setClock(rem){
+  var s=Math.ceil(rem/1000);
+  $('#g-clock').textContent=s;
+  $('#g-clock').classList.toggle('urgent',s<=10);
+  var t=$('#g-timer');t.style.width=(rem/(LIMIT*1000)*100)+'%';
+  t.className=s<=10?'low':s<=25?'mid':'';
+}
+function status(m){$('#g-status').textContent=m}
+function buttons(){
+  var st=S.state;
+  $('#b-start').disabled=!(st==='ready'||st==='stopped');
+  $('#b-start').textContent=st==='stopped'?'Resume':'Start';
+  $('#b-stop').disabled=st!=='hover';
+  $('#b-enter').disabled=st!=='stopped';
+}
+function tiles(){return $('#opts').children}
+function clearTile(){Array.prototype.forEach.call(tiles(),function(t){t.classList.remove('on')})}
+function placeRunner(){
+  var t=tiles()[S.idx];if(!t||$('#s-game').hidden)return;
+  $('#runner').style.transform='translate('+(t.offsetLeft+t.offsetWidth/2-20)+'px,'+(t.offsetTop-50)+'px)';
+}
+window.addEventListener('resize',placeRunner);
+
+function ready(){
+  clearTimers();
+  S.state='ready';S.idx=0;S.q=makeQuestion(S.diff);
+  $('#g-cat').textContent=S.q.cat;
+  $('#g-q').textContent=S.q.q;
+  var o=$('#opts');o.textContent='';
+  S.q.opts.forEach(function(t,i){
+    var d=document.createElement('div');d.className='tile';
+    var b=document.createElement('b');b.textContent='ABCD'[i];
+    var s=document.createElement('span');s.textContent=t;
+    d.appendChild(b);d.appendChild(s);o.appendChild(d);
+  });
+  setClock(LIMIT*1000);
+  status('Press START. You get 60 seconds for this question.');
+  buttons();
+  requestAnimationFrame(placeRunner);
+}
+function start(){
+  ensureAudio();
+  if(S.state==='ready'){S.deadline=Date.now()+LIMIT*1000;S.tick=setInterval(tick,100)}
+  else if(S.state!=='stopped')return;
+  S.state='hover';clearTile();
+  status('The climber is hopping. Press STOP when it is on your answer.');
+  buttons();hop();
+}
+function hop(){
+  clearTimeout(S.hop);
+  S.hop=setTimeout(function(){
+    if(S.state!=='hover')return;
+    var n;do{n=Math.floor(Math.random()*4)}while(n===S.idx);
+    S.idx=n;placeRunner();blip();hop();
+  },DIFF[S.diff].ms+Math.floor(Math.random()*180)-90);
+}
+function stop(){
+  if(S.state!=='hover')return;
+  clearTimeout(S.hop);S.state='stopped';
+  tiles()[S.idx].classList.add('on');
+  status('Stopped on '+'ABCD'[S.idx]+'. Press ENTER to lock it, or Resume to move again.');
+  buttons();
+}
+function tick(){
+  var rem=Math.max(0,S.deadline-Date.now());setClock(rem);
+  if(rem<=0&&(S.state==='hover'||S.state==='stopped'||S.state==='ready')){
+    clearTimers();S.state='locked';buttons();
+    var t=tiles();if(t[S.q.ci])t[S.q.ci].classList.add('right');
+    wrong(true);
+  }
+}
+function lock(){
+  if(S.state!=='stopped')return;
+  clearTimers();S.state='locked';buttons();
+  var t=tiles(),ok=S.idx===S.q.ci;
+  t[S.idx].classList.remove('on');t[S.idx].classList.add(ok?'right':'wrong');
+  if(!ok)t[S.q.ci].classList.add('right');
+  if(ok)correct();else wrong(false);
+}
+function correct(){
+  sfx('ok');blast();
+  var L=S.level,d=S.data[S.diff];d.right=(d.right||0)+1;
+  var b=$('#boom');
+  b.innerHTML='<div><div class="boom-w">Correct!</div><div class="boom-s"></div></div>';
+  b.querySelector('.boom-s').textContent=L>=TOTAL?'Level 100 cleared':'Level '+L+' cleared';
+  b.hidden=false;status('Correct!');
+  S.winTimers.push(setTimeout(function(){
+    b.hidden=true;
+    if(L>=TOTAL){win();return}
+    S.level=L+1;d.level=S.level;d.best=Math.max(d.best,S.level);save();
+    renderLevel();ready();
+  },1600));
+}
+function wrong(timeUp){
+  sfx('bad');
+  var L=S.level,d=S.data[S.diff],nl=Math.max(1,L-FALL);
+  d.falls=(d.falls||0)+1;d.level=nl;save();
+  var ov=$('#ov');
+  ov.innerHTML='<div class="ov-box"><div class="pit"><div class="faller"></div></div><h2></h2><p class="ans panel"></p><p class="drop"></p><button class="btn" type="button" id="ov-go">Climb again</button></div>';
+  ov.querySelector('.faller').innerHTML=RUNNER;
+  ov.querySelector('h2').textContent=timeUp?'Time’s up':'Wrong!';
+  ov.querySelector('.ans').textContent='Correct answer: '+S.q.a;
+  ov.querySelector('.drop').textContent=nl===L?'You are at the bottom. Level 1.':'You fall '+(L-nl)+' level'+(L-nl>1?'s':'')+': '+L+' → '+nl;
+  ov.hidden=false;
+  S.winTimers.push(setTimeout(function(){var g=$('#ov-go');if(g)g.focus()},1600));
+  $('#ov-go').addEventListener('click',function(){
+    ov.hidden=true;S.level=nl;renderLevel();ready();
+  });
+}
+
+/* confetti blast */
+function blast(){
+  if(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+  var c=$('#fx'),x=c.getContext('2d');c.width=innerWidth;c.height=innerHeight;
+  var cols=['#f5cf3d','#46d6b0','#ff5a36','#f4ead9','#9b7bff'],P=[];
+  for(var i=0;i<150;i++){var a=Math.random()*Math.PI*2,s=4+Math.random()*10;
+    P.push({x:c.width/2,y:c.height*.42,vx:Math.cos(a)*s,vy:Math.sin(a)*s-4,w:5+Math.random()*7,h:3+Math.random()*5,r:Math.random()*6,vr:(Math.random()-.5)*.4,col:cols[i%5]})}
+  var t0=performance.now();
+  (function f(t){
+    var k=t-t0;x.clearRect(0,0,c.width,c.height);if(k>1500)return;
+    P.forEach(function(p){p.vy+=.35;p.vx*=.99;p.x+=p.vx;p.y+=p.vy;p.r+=p.vr;
+      x.save();x.translate(p.x,p.y);x.rotate(p.r);x.fillStyle=p.col;x.globalAlpha=Math.max(0,1-k/1500);x.fillRect(-p.w/2,-p.h/2,p.w,p.h);x.restore()});
+    requestAnimationFrame(f);
+  })(t0);
+}
+
+/* win: stairs and trophy */
+function win(){
+  var d=S.data[S.diff];d.wins=(d.wins||0)+1;d.level=1;save();
+  clearTimers();sky(TOTAL);sfx('win');blast();
+  $('#w-sub').textContent=S.email.split('@')[0]+', you cleared all 100 levels on '+DIFF[S.diff].name+'. Climb the stairs.';
+  $('#w-take').hidden=true;$('#w-card').hidden=true;
+  var svg='<defs><radialGradient id="gl"><stop offset="0" stop-color="#fff6c9" stop-opacity=".95"/><stop offset="1" stop-color="#fff6c9" stop-opacity="0"/></radialGradient></defs><circle cx="310" cy="30" r="110" fill="url(#gl)"/>';
+  svg+='<rect x="270" y="50" width="80" height="230" fill="#f1e2cd" stroke="#3a2230" stroke-width="2"/>';
+  for(var i=0;i<10;i++){var h=(i+1)*20;svg+='<rect class="stp" x="'+(10+i*26)+'" y="'+(250-h)+'" width="26" height="'+(h+30)+'" fill="'+(i%2?'#d9c7b0':'#e9d9c3')+'" stroke="#3a2230" stroke-width="2" style="opacity:0"/>'}
+  svg+='<g class="tro" id="tro" transform="translate(275,-20) scale(.7)">'+TROPHY_G+'</g>';
+  svg+='<g id="climber" style="transform:translate(-30px,209px) scale(.7)">'+RUNNER_G+'</g>';
+  $('#stairs').innerHTML=svg;
+  show('win');
+  var steps=$('#stairs').querySelectorAll('.stp'),delay=0;
+  var later=function(fn,ms){S.winTimers.push(setTimeout(fn,ms))};
+  for(var k=0;k<steps.length;k++)(function(el,n){later(function(){el.style.opacity=1},300+n*130)})(steps[k],k);
+  delay=300+steps.length*130+300;
+  var path=[];for(var j=0;j<10;j++)path.push([9+j*26,250-(j+1)*20-39]);path.push([298,50-39]);
+  path.forEach(function(p,n){later(function(){$('#climber').style.transform='translate('+p[0]+'px,'+p[1]+'px) scale(.7)'},delay+n*300)});
+  later(function(){$('#tro').classList.add('glow');$('#w-take').hidden=false},delay+path.length*300+200);
+}
+$('#w-take').addEventListener('click',function(){
+  $('#w-take').hidden=true;
+  $('#w-trophy').innerHTML='<svg class="trophy-big" viewBox="0 0 100 110" role="img" aria-label="Golden trophy">'+TROPHY_G+'</svg>';
+  $('#w-line').textContent=S.email.split('@')[0]+' escaped hell on '+DIFF[S.diff].name+' mode.';
+  $('#w-card').hidden=false;blast();
+});
+$('#w-menu').addEventListener('click',function(){stopAll();renderMenu();show('menu')});
+
+/* controls */
+$('#b-start').addEventListener('click',start);
+$('#b-stop').addEventListener('click',stop);
+$('#b-enter').addEventListener('click',lock);
+$('#g-back').addEventListener('click',function(){stopAll();S.state='idle';renderMenu();show('menu')});
+$('#g-mute').addEventListener('click',function(){
+  S.mute=!S.mute;this.textContent=S.mute?'Sound off':'Sound on';this.setAttribute('aria-pressed',String(S.mute));
+});
+document.addEventListener('keydown',function(e){
+  if($('#s-game').hidden||!$('#ov').hidden)return;
+  if(e.target.closest&&e.target.closest('button,input'))return;
+  if(e.code==='Space'){e.preventDefault();if(S.state==='hover')stop();else start()}
+  else if(e.key==='Enter'){lock()}
+});
+})();
+</script>
