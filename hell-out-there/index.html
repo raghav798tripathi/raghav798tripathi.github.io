@@ -1,9 +1,15 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Hell Out There</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bungee&family=Barlow:wght@500;600;700&display=swap">
 <style>
+[hidden]{display:none!important}
 /* Layout: one narrow column. The whole page background is an altitude gradient: level 1 is deep hell, level 100 is a gold dawn. All text sits on dark panels so it stays readable at any altitude. */
 :root{
   --ink:#1a0d18;
@@ -158,6 +164,8 @@ input:focus-visible{outline:3px solid var(--sulphur);outline-offset:1px}
 }
 </style>
 
+</head>
+<body>
 <div id="sky" aria-hidden="true"></div>
 <main id="app">
 
@@ -745,3 +753,5 @@ document.addEventListener('keydown',function(e){
 });
 })();
 </script>
+</body>
+</html>
